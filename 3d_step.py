@@ -41,7 +41,7 @@ class Zombie(Monster):
 
     def take_damage(self, damage):
         self.set_hp(self.get_hp() - damage)
-        print (f'{self.get_name()} теряет конечность! Получено {damage}. HP: {self.get_hp()}')
+        print (f'{self.get_name()} теряет конечность! Получено {damage} урона. HP: {self.get_hp()}')
 
 
 class Vampire(Monster):
@@ -51,7 +51,7 @@ class Vampire(Monster):
     def take_damage(self, damage):
         feature = max (0, damage - 5)
         self.set_hp(self.get_hp() - feature)
-        print (f'{self.get_name()} поглащает 5 урона! Получено {feature}. HP: {self.get_hp()}')
+        print (f'{self.get_name()} поглащает 5 урона! Получено {feature} урона. HP: {self.get_hp()}')
 
 
 class Ghost(Monster):
@@ -60,10 +60,10 @@ class Ghost(Monster):
 
     def take_damage(self, damage):
         if random.random() < 0.3:
-            print (f'{self.get_name()} уклонился от удара! Не прошло {damage}. HP: {self.get_hp()}')
+            print (f'{self.get_name()} уклонился от удара! Не прошло {damage} урона. HP: {self.get_hp()}')
         else:
             self.set_hp(self.get_hp() - damage)
-            print (f'{self.get_name()} пропустил двоечку! Получено {damage}. HP: {self.get_hp()}')
+            print (f'{self.get_name()} пропустил двоечку! Получено {damage} урона. HP: {self.get_hp()}')
 
 
 class Werewolf(Monster):
@@ -73,12 +73,52 @@ class Werewolf(Monster):
 
     def take_damage(self,damage):
         self.set_hp(self.get_hp() - damage)
-        print (f'{self.get_name()} получает в пасть! Получено {damage}. HP: {self.get_hp()}')
+        print (f'{self.get_name()} получает в пасть! Получено {damage} урона. HP: {self.get_hp()}')
         if self.__hp < 50 and self.__transformed == False:
             print (f'{self.get_name()} имеет меньше 50 HP. Оборотень трансформируется!')
             self.__transformed = True
 
 
+class Weapon:
+    def __init__(self, name):
+        self.name = name
+
+    def use(self, monster):
+        pass
 
 
+class SilverSword(Weapon):
+    def __init__(self):
+        super().__init__("Серебряный меч")
+        self.dmg = 30
 
+    def use(self, monster):
+        print(f"Охотник наносит удар: {self.name}! На {self.dmg} урона")
+        monster.take_damage(self.dmg)
+
+
+class HolyWater(Weapon):
+    def __init__(self):
+        super().__init__("Святая вода")
+        self.dmg = 20
+
+    def use(self, monster):
+        print(f"Охотник обливает монстра: {self.name}! На {self.dmg} урона")
+        monster.take_damage(self.dmg)
+
+
+class CrossbowBolt(Weapon):
+    def __init__(self):
+        super().__init__("Арбалет с болтом")
+        self.dmg = 25
+
+    def use(self, monster):
+        print(f"Охотник стреляет из: {self.name}! На {self.dmg} урона")
+        monster.take_damage(self.dmg)
+
+
+weapons = [SilverSword(),HolyWater(),CrossbowBolt()]
+zombie = Zombie('Зомби')
+for w in weapons:
+    w.use(zombie)
+    print()
